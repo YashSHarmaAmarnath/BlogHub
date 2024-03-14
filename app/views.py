@@ -13,7 +13,7 @@ mongo = PyMongo(app)
 def index():
     # print(currentuser,'///')
     if logined:
-        return render_template("index.html",userName=currentuser.get('userName'))
+        return render_template("index.html",userName=currentuser.get('userName'),logined=logined)
     return redirect('/login')
 
 @app.route("/create", methods=['GET', 'POST'])
@@ -38,13 +38,13 @@ def create():
         # Redirect to the blogs page
         return redirect(url_for('all_blogs'))
     
-    return render_template("create.html",userName=currentuser.get('userName'))
+    return render_template("create.html",userName=currentuser.get('userName'),logined=logined)
 
 @app.route("/blogs")
 def all_blogs():
     # Retrieve all blog posts from MongoDB
     blogs = mongo.db.blogs.find()
-    return render_template("blogs.html", blogs=blogs,userName=currentuser.get('userName') )
+    return render_template("blogs.html", blogs=blogs,userName=currentuser.get('userName'),logined=logined )
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -73,7 +73,7 @@ def login():
     return render_template("login.html",message = msg)
 
 @app.route("/register", methods=['GET', 'POST'])
-def regis():
+def register():
     global logined, currentuser
     msg = ''
     collection = mongo.db.Users
@@ -88,5 +88,12 @@ def regis():
             msg = 'password does not match'
     return render_template("register.html",message = msg)
 
+@app.route('/logout')
+def logout():
+    global logined,currentuser
+    logined = False
+    currentuser = None
+    return redirect('/login')
+    
 if __name__ == '__main__':
     app.run(debug=True)

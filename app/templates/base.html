@@ -266,7 +266,9 @@
     </style>
 </head>
 <body>
-  <div class="logo"><center>✒️BlogHub</center><p align=right>-{{userName}}</p></div>
+  <div class="logo"><center>✒️BlogHub</center><p align=right>-{{userName}}{% if logined %}
+    <a href="/logout">Loguot</a>
+  {% endif %}</p></div>
     <div class="navbar">
         <a class="active" href="/">Home</a>
         <a href="about">About</a>
