@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}View{% endblock %}
+{% block content %}
+
+    {% for blog in blogs %}
+    
+    <div class="container">
+        <center>
+            <h2>{{ blog.title }}</h2>
+        </center>
+        <p>Author: {{ blog.author }}</p>
+        <p>{{ blog.content }}</p>
+    </div>
+    <!-- <hr> -->
+    {% endfor %}
+
+{% endblock %}
