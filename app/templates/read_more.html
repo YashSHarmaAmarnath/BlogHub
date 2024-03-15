@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}View{% endblock %}
+{% block content %}
+<div class="main_blog_container">
+    <h2>{{ blog.title }}</h2>
+<p>Author: {{ blog.author }}</p>
+<p>   {{blog.content}}</p>
+</div>
+
+{% endblock %}

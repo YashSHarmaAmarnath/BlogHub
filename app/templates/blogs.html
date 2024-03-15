@@ -1,17 +1,51 @@
 {% extends "base.html" %}
 {% block title %}View{% endblock %}
 {% block content %}
+<style>
+    form {
+        margin: 20px auto;
+        width: 300px;
+        text-align: center;
+        display: flex;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        height: 40px;
+    }
+    input[type="submit"] {
+        background-color: #76ABAE;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        height: 40px;
 
+    }
+    input[type="submit"]:hover {
+        background-color: #31363F;
+;
+        color: #EEEEEE;
+    }
+</style>
+<form action="/Search" method="POST"> 
+    <input type="text" name="query" placeholder="Enter your search term">
+    <input type="submit" value="Search">
+</form>
+<h3>{{msg}}</h3>
+<div class="blog_container">
     {% for blog in blogs %}
-    
-    <div class="container">
-        <center>
-            <h2>{{ blog.title }}</h2>
-        </center>
+    <div class="blog_card">
+        <h2>{{ blog.title }}</h2>
         <p>Author: {{ blog.author }}</p>
-        <p>{{ blog.content }}</p>
-    </div>
-    <!-- <hr> -->
+        <form action="/read_more" method="post">
+            <input type="hidden" name="blog_id" value="{{ blog._id }}">
+            <input type="submit" value="Read More">
+        </form>
+    </div>  
     {% endfor %}
+</div>
 
 {% endblock %}

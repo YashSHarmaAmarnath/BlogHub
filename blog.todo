@@ -10,7 +10,7 @@ Features:
 1. User Authentication: Implement user registration and login functionality using Flask-Login to allow users to create and manage their own blog posts.
 
 2. CRUD Operations: Allow registered users to create, read, update, and delete their blog posts. Each blog post should have attributes such as title, content, author, publication date, etc.
-
+                        ----------------
 3. Pagination: Implement pagination for displaying a limited number of posts per page to improve performance and user experience.
 
 4. Comments: Allow readers to leave comments on blog posts. Each comment should have attributes such as author, content, publication date, etc.
@@ -75,3 +75,15 @@ Instructions:
 11. Deploy your Flask application to a hosting provider such as Heroku or AWS.
 
 This project will provide hands-on experience with building a full-stack web application using Flask, MongoDB, and various Flask extensions, along with implementing user authentication, CRUD operations, and other essential features of a blog platform.
+
+publication date
+store user id when user post blog
+dispal blog of users under there profile page
+alow to update and delete blog
+
+.color{
+    color: #EEEEEE;
+    color: #76ABAE;
+    color: #31363F;
+    color: #222831;
+}
