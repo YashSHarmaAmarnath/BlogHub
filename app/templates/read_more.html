@@ -3,8 +3,9 @@
 {% block content %}
 <div class="main_blog_container">
     <h2>{{ blog.title }}</h2>
-<p>Author: {{ blog.author }}</p>
-<p>   {{blog.content}}</p>
+        
+    <p>Author: {{ blog.author }}</p><p>{{ blog.date }}</p>
+    <p>   {{blog.content}}</p>
 </div>
 
 {% endblock %}

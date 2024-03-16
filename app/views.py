@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,jsonify
 from flask_pymongo import PyMongo
 from bson import ObjectId  
-
+import datetime
 logined = False
 currentuser  = None
 app = Flask(__name__)
@@ -14,7 +14,10 @@ mongo = PyMongo(app)
 def index():
     # print(currentuser,'///')
     if logined:
-        return render_template("index.html",userName=currentuser.get('userName'),logined=logined)
+        userid = currentuser.get('userName')
+        blogs = mongo.db.blogs.find({ 'userid': userid })
+ 
+        return render_template("index.html",userName=userid,logined=logined,blogs=blogs)
     return redirect('/login')
 
 @app.route("/create", methods=['GET', 'POST'])
@@ -27,10 +30,11 @@ def create():
         title = request.form['title']
         content = request.form['content']
         author = request.form['author']
-                
+        date = datetime.date.today() 
+        userid = userName=currentuser.get('userName')
         # Insert blog post data into MongoDB
         collection = mongo.db.blogs
-        collection.insert_one({'title': title, 'content': content, 'author': author})
+        collection.insert_one({'title': title, 'content': content, 'author': author,'date':date.strftime("%Y-%m-%d"), 'userid': userid})
         
         # Redirect to the blogs page
         return redirect(url_for('all_blogs'))
@@ -116,7 +120,7 @@ def read_more():
     if request.method == 'POST':
         # Assuming you're passing the blog ID as a form parameter named 'blog_id'
         blog_id = request.form.get('blog_id')
-        print(blog_id)
+        # print(blog_id)
         # Retrieve the specific blog post from MongoDB using its ID
         blog = mongo.db.blogs.find_one({'_id': ObjectId(blog_id)})
         if blog:
@@ -128,6 +132,17 @@ def read_more():
     else:
         # If the request method is not POST, handle it accordingly
         return redirect('/blogs')
+@app.route('/delete',methods=['GET','POST'])
+def delete():
+    if not logined:
+        return redirect('/login')
+    if request.method == 'POST':
+        # Assuming you're passing the blog ID as a form parameter named 'blog_id'
+        blog_id = request.form.get('blog_id')
+        if blog_id:
+            mongo.db.blogs.delete_one({'_id': ObjectId(blog_id)})
     
+    return redirect('/')
+
 if __name__ == '__main__':
     app.run(debug=True)
