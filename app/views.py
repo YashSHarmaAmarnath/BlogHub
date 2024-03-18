@@ -1,20 +1,23 @@
-from flask import Flask, render_template, request, redirect, url_for,jsonify
+from flask import Flask, render_template, request, redirect, url_for,jsonify,session
 from flask_pymongo import PyMongo
 from bson import ObjectId  
 import datetime
 logined = False
-currentuser  = None
+# currentuser  = None
 app = Flask(__name__)
-
+app.secret_key = 'BLOGAPP'
+# database = open('database.txt','r').read()
 # Configuration for MongoDB
-app.config["MONGO_URI"] = "mongodb://localhost:27017/blogs"
+app.config["MONGO_URI"] = 'mongodb://localhost:27017/blogs'
 mongo = PyMongo(app)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
     # print(currentuser,'///')
-    if logined:
-        userid = currentuser.get('userName')
+    if not logined:
+        return redirect('/login')
+    if 'username' in session:
+        userid = session["username"]
         blogs = mongo.db.blogs.find({ 'userid': userid })
  
         return render_template("index.html",userName=userid,logined=logined,blogs=blogs)
@@ -31,7 +34,7 @@ def create():
         content = request.form['content']
         author = request.form['author']
         date = datetime.date.today() 
-        userid = userName=currentuser.get('userName')
+        userid =session["username"]
         # Insert blog post data into MongoDB
         collection = mongo.db.blogs
         collection.insert_one({'title': title, 'content': content, 'author': author,'date':date.strftime("%Y-%m-%d"), 'userid': userid})
@@ -39,7 +42,7 @@ def create():
         # Redirect to the blogs page
         return redirect(url_for('all_blogs'))
     
-    return render_template("create.html",userName=currentuser.get('userName'),logined=logined)
+    return render_template("create.html",userName=session["username"],logined=logined)
 
 @app.route("/blogs")
 def all_blogs():
@@ -48,7 +51,7 @@ def all_blogs():
         
     # Retrieve all blog posts from MongoDB
     blogs = mongo.db.blogs.find()
-    return render_template("blogs.html", blogs=blogs,userName=currentuser.get('userName'),logined=logined )
+    return render_template("blogs.html", blogs=blogs,userName=session["username"],logined=logined )
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -66,7 +69,7 @@ def login():
                 if password == stored_pass:
                     # print('logined')
                     logined = True
-                    currentuser = user
+                    session['username'] = request.form['username']
                     # print(currentuser)
                     # return redirect('/')
                     return redirect('/')
@@ -85,18 +88,27 @@ def register():
         userName = request.form['username']
         password = request.form['password']
         password1 = request.form['password1']
+        user = collection.find_one({'userName':userName})
+        print(user)
+        if user:
+
+            print('user already exist')
+            msg = 'User Name already taken'
+            return render_template("register.html",message = msg)
         if password == password1:
             collection.insert_one({'userName':userName,'password':password})
             return redirect('/login')
+
         else:
-            msg = 'password does not match'
+            msg += 'password does not match'
     return render_template("register.html",message = msg)
 
 @app.route('/logout')
 def logout():
     global logined,currentuser
     logined = False
-    currentuser = None
+    # currentuser = None
+    session.pop('username', None)
     return redirect('/login')
 
 @app.route("/Search",methods=['GET', 'POST'])
@@ -109,7 +121,7 @@ def search():
         blogs = mongo.db.blogs.find({ '$text': { '$search': query } })
         blogs1 = mongo.db.blogs.find({ 'author': { '$regex': query, '$options': 'i' } })
         msg = f'Search reasult for :{query}'
-        return render_template("blogs.html", blogs=list(blogs)+list(blogs1),userName=currentuser.get('userName'),logined=logined ,msg=msg)
+        return render_template("blogs.html", blogs=list(blogs)+list(blogs1),userName=session["username"],logined=logined ,msg=msg)
     return render_template("blogs.html", blogs='blogs')
 
 @app.route('/read_more',methods=['GET','POST'])
@@ -125,7 +137,7 @@ def read_more():
         blog = mongo.db.blogs.find_one({'_id': ObjectId(blog_id)})
         if blog:
             # Render the read more template with the specific blog post
-            return render_template("read_more.html", blog=blog, userName=currentuser.get('userName'), logined=logined)
+            return render_template("read_more.html", blog=blog, userName=session["username"], logined=logined)
         else:
             # If the blog post is not found, you can handle it appropriately
             return "Blog post not found."
@@ -144,5 +156,18 @@ def delete():
     
     return redirect('/')
 
+@app.route('/creator',methods=['GET','POST'])
+def creator():
+    users = mongo.db.Users.find({},{'password':0,'_id':0})
+    if request.method == 'POST':
+        userName1 = request.form['userName']
+        blogs = mongo.db.blogs.find({ 'userName': userName1 })
+        print(userName1,blogs)
+        return render_template('viewWork.html',userName = session["username"] ,userName1=userName1,blogs = blogs)
+    return render_template('creator.html',users =users)
+
+@app.route('/viewWork/<string:userName>')
+def viewWork():
+    pass
 if __name__ == '__main__':
     app.run(debug=True)

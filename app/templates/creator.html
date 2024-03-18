@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="container">
+    
+    {% for user in users %}
+        {{user.userName}}
+        <form action="/creator" method="post">
+            <input type="hidden" name="userName" value="{{ user.userName }}">
+            <input type="submit" value="View work">
+        </form>
+        <br>
+        <hr>
+    {% endfor %}
+
+</div>
+{% endblock content %}

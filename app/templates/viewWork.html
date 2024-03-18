@@ -99,7 +99,7 @@
                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
             </svg>
         </div>
-        <p class="name-client">{{userName}}
+        <p class="name-client">{{userName1}}
            
         </p>
         
@@ -122,21 +122,9 @@
           <input type="hidden" name="blog_id" value="{{ blog._id }}">
           <input type="submit" value="Read More">
       </form>
-      <form action="/delete" method="post" id="deleteForm">
-          <input type="hidden" name="blog_id" value="{{ blog._id }}">
-          <!-- <input type="submit" value="Delete" class="delete"> -->
-          <!-- <button type="submit" class="delete">Delete</button> -->
-          <button type="button" onclick="confirmDelete()" class="delete">Delete</button>
-      </form></div>
+      </div>
     </div>  
     {% endfor %}
 </div>
-<script>
-  function confirmDelete() {
-    var confirmation = confirm("Are you sure you want to delete this blog?");
-    if (confirmation) {
-        document.getElementById("deleteForm").submit();
-    }
-}
-</script>
+
 {% endblock %}
