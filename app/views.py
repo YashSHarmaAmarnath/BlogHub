@@ -158,16 +158,21 @@ def delete():
 
 @app.route('/creator',methods=['GET','POST'])
 def creator():
+    if not logined:
+        return redirect('/login')
     users = mongo.db.Users.find({},{'password':0,'_id':0})
-    if request.method == 'POST':
-        userName1 = request.form['userName']
-        blogs = mongo.db.blogs.find({ 'userName': userName1 })
-        print(userName1,blogs)
-        return render_template('viewWork.html',userName = session["username"] ,userName1=userName1,blogs = blogs)
-    return render_template('creator.html',users =users)
+    # if request.method == 'POST':
+    #     userName1 = request.form['userName']
+    #     blogs = mongo.db.blogs.find({ 'userName': userName1 })
+    #     print(userName1,blogs)
+    #     return render_template('viewWork.html',userName = session["username"] ,userName1=userName1,blogs = blogs)
+    # user = url_for('user_blog_posts', username='username')
+    return render_template('creator.html',users =users,userName=session["username"] ,logined=logined)
 
-@app.route('/viewWork/<string:userName>')
-def viewWork():
-    pass
+@app.route('/viewWork/<username>')
+def viewWork(username):
+    blogs = mongo.db.blogs.find({ 'userid': username })
+    return render_template('viewWork.html',userName=session["username"], logined=logined,user = username,blogs = blogs)
+    
 if __name__ == '__main__':
     app.run(debug=True)
