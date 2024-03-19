@@ -171,8 +171,14 @@ def creator():
 
 @app.route('/viewWork/<username>')
 def viewWork(username):
-    blogs = mongo.db.blogs.find({ 'userid': username })
-    return render_template('viewWork.html',userName=session["username"], logined=logined,user = username,blogs = blogs)
+    if not logined:
+        return redirect('/login')
+    user = mongo.db.Users.find_one({'userName': username}, {'_id': 0})
+    if user:
+        blogs = mongo.db.blogs.find({ 'userid': username })
+        return render_template('viewWork.html',userName=session["username"], logined=logined,user = username,blogs = blogs)
+    else:
+        return render_template('404.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
