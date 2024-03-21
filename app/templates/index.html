@@ -1,97 +1,101 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block content %}
+  {% extends "base.html" %}
+  {% block title %}Home{% endblock %}
+  {% block content %}
 
-<style>
-    form {
-        margin: 20px auto;
-        width: 300px;
-        text-align: center;
-        display: flex;
-    }
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-        height: 40px;
-    }
-    input[type="submit"] {
-        background-color: #76ABAE;
-        color: rgb(0, 0, 0);
-        padding: 10px 20px;
+  <style>
+      form {
+          margin: 20px auto;
+          width: 300px;
+          text-align: center;
+          display: flex;
+      }
+      input[type="text"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          height: 40px;
+      }
+      input[type="submit"] {
+          background-color: #76ABAE;
+          color: rgb(0, 0, 0);
+          padding: 10px 20px;
+          border: none;
+          cursor: pointer;
+          height: 40px;
+
+      }
+      input[type="submit"]:hover {
+          background-color: #659bff;
+  ;
+          color: #EEEEEE;
+      }
+      .delete{
+        margin-left: 5px;
         border: none;
-        cursor: pointer;
-        height: 40px;
+        background-color: rgb(247, 36, 36);
+        color: white;
+      }
+      .delete:hover{
+        background-color: rgb(252, 52, 52);
+        }
+        .container{
+          flex-direction: column;
+        }
+        .container>h1{
+          font-size: 15vh;
+          padding: 0;
+          margin: 0;
+        }
+        .primary-button{
+          max-width: 100px;
+          margin: 10px;
+        }
+        .button_block{
+          display: flex;
+        }
+  </style>
+  <div class="container" style="display: flex;">
+      
+    <h1>Hello,{{userName}}</h1>
+          <br>
+      <div class="button_block">
+        <button class="primary-button"  onclick="location.href=`/create`">➕ Create</button><br><br>
+      <button class="primary-button" onclick="location.href=`/logout`">Logout</button><br><br>
+      <button class="primary-button"></button><br><br>
+      </div>
+      </div>
+  </div>
 
-    }
-    input[type="submit"]:hover {
-        background-color: #659bff;
-;
-        color: #EEEEEE;
-    }
-    .delete{
-      margin-left: 5px;
-      border: none;
-      background-color: rgb(247, 36, 36);
-      color: white;
-    }
-    .delete:hover{
-      background-color: rgb(252, 52, 52);
+  <div class="blog_container">
+      {% for blog in blogs %}
+      <div class="blog_card">
+          <h2>{{ blog.title }}</h2>
+          <p>Author: {{ blog.author }}</p>
+          <div class="btn_container" style="display: flex;">
+            <form action="/read_more" method="post">
+            <input type="hidden" name="blog_id" value="{{ blog._id }}">
+            <input type="submit" value="Read More">
+        </form>
+        <form action="/delete" method="post" id="deleteForm">
+            <input type="hidden" name="blog_id" value="{{ blog._id }}">
+            <!-- <input type="submit" value="Delete" class="delete"> -->
+            <!-- <button type="submit" class="delete">Delete</button> -->
+            <button type="submit" onclick="confirmDelete(event)"   class="delete">Delete</button>
+        </form></div>
+      </div>  
+      {% endfor %}
+  </div>
+  <script>
+    function confirmDelete(event) {
+      var confirmation = confirm("Are you sure you want to delete this blog?");
+      if (!confirmation) {
+        event.preventDefault(); // Prevent form submission if user clicks "No"
       }
-      .container{
-        flex-direction: column;
-      }
-      .container>h1{
-        font-size: 15vh;
-        padding: 0;
-        margin: 0;
-      }
-      .primary-button{
-        max-width: 100px;
-        margin: 10px;
-      }
-      .button_block{
-        display: flex;
-      }
-</style>
-<div class="container" style="display: flex;">
-    
-  <h1>Hello,{{userName}}</h1>
-        <br>
-    <div class="button_block">
-      <button class="primary-button"  onclick="location.href=`/create`">➕ Create</button><br><br>
-    <button class="primary-button" onclick="location.href=`/logout`">Logout</button><br><br>
-    <button class="primary-button"></button><br><br>
-    </div>
-    </div>
-</div>
-
-<div class="blog_container">
-    {% for blog in blogs %}
-    <div class="blog_card">
-        <h2>{{ blog.title }}</h2>
-        <p>Author: {{ blog.author }}</p>
-        <div class="btn_container" style="display: flex;">
-          <form action="/read_more" method="post">
-          <input type="hidden" name="blog_id" value="{{ blog._id }}">
-          <input type="submit" value="Read More">
-      </form>
-      <form action="/delete" method="post" id="deleteForm">
-          <input type="hidden" name="blog_id" value="{{ blog._id }}">
-          <!-- <input type="submit" value="Delete" class="delete"> -->
-          <!-- <button type="submit" class="delete">Delete</button> -->
-          <button type="button" onclick="confirmDelete()"   class="delete">Delete</button>
-      </form></div>
-    </div>  
-    {% endfor %}
-</div>
-<script>
-  function confirmDelete() {
-    var confirmation = confirm("Are you sure you want to delete this blog?");
-    if (confirmation) {
-        document.getElementById("deleteForm").submit();
-    }
-}
-</script>
-{% endblock %}
+    } 
+      /*if (confirmation) {
+          document.getElementById("deleteForm").submit();
+      }*/ 
+  
+  </script>
+  {% endblock %}
