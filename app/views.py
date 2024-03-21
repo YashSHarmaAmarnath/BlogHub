@@ -161,12 +161,6 @@ def creator():
     if not logined:
         return redirect('/login')
     users = mongo.db.Users.find({},{'password':0,'_id':0})
-    # if request.method == 'POST':
-    #     userName1 = request.form['userName']
-    #     blogs = mongo.db.blogs.find({ 'userName': userName1 })
-    #     print(userName1,blogs)
-    #     return render_template('viewWork.html',userName = session["username"] ,userName1=userName1,blogs = blogs)
-    # user = url_for('user_blog_posts', username='username')
     return render_template('creator.html',users =users,userName=session["username"] ,logined=logined)
 
 @app.route('/viewWork/<username>')
@@ -180,5 +174,26 @@ def viewWork(username):
     else:
         return render_template('404.html')
     
+@app.route('/update',methods=['GET','POST'])
+def update():
+    if not logined:
+        return redirect('/login')
+    if request.method == 'POST':
+        if request.form['action'] == 'toupdate':
+            blog_id = request.form['blog_id']
+            blog = mongo.db.blogs.find_one({'_id': ObjectId(blog_id)})
+            if blog:
+                return render_template('update.html',blog=blog,logined=logined,userName=session["username"],)
+            else:
+                return 'no blog like this'
+        if request.form['action'] == 'update':
+            title = request.form['title']
+            content = request.form['content']
+            author = request.form['author']
+            blog_id = request.form['blog_id']
+            mongo.db.blogs.update_one({'_id': ObjectId(blog_id)}, {'$set': {'title': title, 'content': content, 'author': author}})
+   
+    return redirect('/')
+
 if __name__ == '__main__':
     app.run(debug=True)
