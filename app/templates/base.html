@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: #222831;
-            color: #EEEEEE;
+            color: #EEEEEE; 
         }
         
            .navbar{
@@ -167,9 +167,10 @@ textarea.input {
           </ul>
         </div>
         <div class="logo"><h3>BlogHub</h3></p></div>
-        <div class="user_name_and_logout"><p align=right>{{userName}}{% if logined %}
+        <div class="user_name_and_logout"><p align=right>{{userName}}
+          
           <button><a href="/logout">Loguot</a></button>
-        {% endif %}</div>
+        </div>
       </div>
       <main>
         {% block content %}
