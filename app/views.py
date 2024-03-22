@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,jsonify,session
 from flask_pymongo import PyMongo
 from bson import ObjectId  
-import datetime
+import datetime , bcrypt
 logined = False
 # currentuser  = None
 app = Flask(__name__)
@@ -10,6 +10,9 @@ app.secret_key = 'BLOGAPP'
 # Configuration for MongoDB
 app.config["MONGO_URI"] = 'mongodb://localhost:27017/blogs'
 mongo = PyMongo(app)
+
+def hash_password(password):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -60,20 +63,22 @@ def login():
     collection = mongo.db.Users
     if request.method == 'POST':
         userName = request.form['username']
-        password = request.form['password']
+        password = request.form['password'].encode('utf-8')
+        # password = hash_password(request.form['password'])
         user = collection.find_one({'userName': userName}, {'_id': 0})
 
         if user:
-            stored_pass = user.get('password')
-            if stored_pass:
-                if password == stored_pass:
+            stored_pass_hash = user.get('password')
+            print(f"{stored_pass_hash}\n\n\n{password}")
+            if stored_pass_hash and bcrypt.checkpw(password, stored_pass_hash):
+                # if password == stored_pass:
                     # print('logined')
                     logined = True
                     session['username'] = request.form['username']
                     # print(currentuser)
                     # return redirect('/')
                     return redirect('/')
-                else:
+            else:
                     msg = 'Incorrect password'
         else:
             msg = 'Incorrect user name or password'
@@ -96,7 +101,8 @@ def register():
             msg = 'User Name already taken'
             return render_template("register.html",message = msg)
         if password == password1:
-            collection.insert_one({'userName':userName,'password':password})
+            hashed_password = hash_password(password)
+            collection.insert_one({'userName':userName,'password':hashed_password})
             return redirect('/login')
 
         else:
@@ -197,3 +203,6 @@ def update():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+#
