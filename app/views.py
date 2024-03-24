@@ -17,8 +17,8 @@ def hash_password(password):
 @app.route("/", methods=['GET', 'POST'])
 def index():
     # print(currentuser,'///')
-    if 'username' not in session:
-        return redirect('/login')
+    # if 'username' not in session:
+    #     return redirect('/login')
     if 'username' in session:
         userid = session["username"]
         blogs = mongo.db.blogs.find({ 'userid': userid })
@@ -69,7 +69,7 @@ def login():
 
         if user:
             stored_pass_hash = user.get('password')
-            print(f"{stored_pass_hash}\n\n\n{password}")
+            # print(f"{stored_pass_hash}\n\n\n{password}")
             if stored_pass_hash and bcrypt.checkpw(password, stored_pass_hash):
                 # if password == stored_pass:
                     # print('logined')
@@ -98,7 +98,7 @@ def register():
             print('user already exist')
             msg = 'User Name already taken'
             return render_template("register.html",message = msg)
-        if password == password1:
+        elif password == password1:
             hashed_password = hash_password(password)
             collection.insert_one({'userName':userName,'password':hashed_password})
             return redirect('/login')
@@ -198,6 +198,31 @@ def update():
             mongo.db.blogs.update_one({'_id': ObjectId(blog_id)}, {'$set': {'title': title, 'content': content, 'author': author}})
    
     return redirect('/')
+
+@app.route('/ChangePassword',methods=['GET','POST'])
+def ChangePassword():
+    if 'username' not in session:
+        return redirect('/login')
+    msg = ''
+    user  = mongo.db.Users.find_one({'userName': session['username']}, {'_id': 0})
+    stored_pass_hash = user.get('password')
+    userName = user.get('userName')
+    if request.method == 'POST':
+        OldPass = request.form['oldpassword']
+        NewPass = request.form['newpassword']
+        if not bcrypt.checkpw( OldPass.encode('utf-8'), stored_pass_hash):
+            msg = "Old password doesn't match; please retry"
+            return render_template('ChangePassword.html',user = userName,message= msg)
+        elif NewPass.encode('utf-8') ==  OldPass.encode('utf-8'):
+            msg = "New password cannot be the same as the old one"
+            return render_template('ChangePassword.html',user = userName,message= msg)
+        else:
+            NewPass = hash_password(NewPass)
+            mongo.db.Users.update_one({'userName': userName}, {'$set': {'password':NewPass }})
+            return redirect('/')
+
+
+    return render_template('ChangePassword.html',user = userName,message= msg)
 
 if __name__ == '__main__':
     app.run(debug=True)
