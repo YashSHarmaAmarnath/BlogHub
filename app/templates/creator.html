@@ -2,31 +2,40 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <style>
-    .link>a{
-        text-decoration: none;
-              color: inherit;
-              cursor: default; 
-              color: aliceblue; 
+    .container1{
+        display: flex;
+        /*flex-direction: column;*/
+        flex-wrap: wrap;
+        background-color: #31363F;
+        width: 50%;
+        margin: auto;
+        margin-top: 20px;
+        padding: 20px;
     }
     .userContainer{
-        display: flex;
-        justify-content: space-between;
+        /*display: flex;*/
+    }
 
+    .user{
+        border: 1px solid white;
+        border-radius: 12px;
+        width: 100px;
+        padding: 5px;
+        margin: 5px;
     }
-    .link{
-        align-self: flex-end;
-        right: 100
-    }
+
+    
 </style>
-<div class="container">
+<div class="container1">
     
     {% for user in users %}
         <div class="userContainer">
+        <div class="user">
             <h3>{{user.userName}}</h3>
-        <button class="primary-button link"><a href="/viewWork/{{user.userName}}">View Work</a></button>
-        <br>
+            <a href="/viewWork/{{user.userName}}"><button class="primary-button link">View Work</button></a>
+        </div>        
         </div>
-        <hr>
+        
     {% endfor %}
 
 </div>
