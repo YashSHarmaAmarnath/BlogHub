@@ -31,6 +31,57 @@
         font-size: 20px;
         font-weight: bold;
     }
+    #commentForm {
+        margin-top: 20px; /* Adjust margin as needed */
+        display: flex;
+    }
+    
+    #commentForm input[type="text"] {
+        width: 80%; /* Adjust width as needed */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+    #commentForm input[type="hidden"] {
+        display: none; /* Hide hidden inputs */
+    }
+    
+    #commentForm input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #76ABAE; /* Adjust button color as needed */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    #commentForm input[type="submit"]:hover {
+        background-color: #0056b3; /* Adjust button hover color as needed */
+    }
+    
+    /* Optional: Styles for placeholder */
+    #commentForm input[type="text"]::placeholder {
+        color: #999;
+    }
+    .comment {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .comment .userName {
+        font-weight: bold;
+    }
+    
+    .comment .commentText {
+        margin-top: 5px;
+        color: #333;
+    }
+
+    
     
 </style>
 
@@ -49,6 +100,32 @@
     <div class="content">
         <p> {{blog.content}}</p>
     </div>
+    <div class="comment">
+        <form id="commentForm" action="/read_more" method="post">
+            <input type="text" name="comment_data" id="" placeholder="Add comment" onkeydown="return event.key != 'Enter';">
+            <input type="hidden" name="action" value="comment">
+            <input type="hidden" name="blog_id" value="{{ blog._id }}">
+            <input type="submit" value="Add comment">
+            <!-- <a href=""></a> -->
+            <!-- <button onclick="submit()">Add comment</button> -->
+        </form>
+        {% for comment in comments %}
+            <div class="comment">
+                <span class="userName">{{ comment.userName }}</span><br>
+                <span class="commentText">{{ comment.comment }}</span><br><br>
+            </div>
+        {% endfor %}
+
+    </div>
 </div>
+
+<!-- <script>
+    function submit() {
+        var form = document.getElementById("deleteForm");
+        //form.submit();
+        form.reset();
+        form.submit();
+    }
+</script> -->
 
 {% endblock %}

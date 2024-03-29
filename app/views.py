@@ -130,22 +130,22 @@ def search():
 @app.route('/read_more',methods=['GET','POST'])
 def read_more():
     if 'username' not in session:
-        return redirect('/login')
         
+        return redirect('/login')
     if request.method == 'POST':
-        # Assuming you're passing the blog ID as a form parameter named 'blog_id'
         blog_id = request.form.get('blog_id')
-        # print(blog_id)
-        # Retrieve the specific blog post from MongoDB using its ID
+        if request.form.get('action') == 'comment':
+            print('comment added')
+            comment = request.form['comment_data']
+            if comment is not None and comment!='':
+                mongo.db.comments.insert_one({'userName':session["username"],'comment':comment,'blog_id':ObjectId(blog_id) })
         blog = mongo.db.blogs.find_one({'_id': ObjectId(blog_id)})
+        comments = mongo.db.comments.find({'blog_id':ObjectId(blog_id)})
         if blog:
-            # Render the read more template with the specific blog post
-            return render_template("read_more.html", blog=blog, userName=session["username"])
+            return render_template("read_more.html", blog=blog,comments=comments, userName=session["username"])
         else:
-            # If the blog post is not found, you can handle it appropriately
             return "Blog post not found."
     else:
-        # If the request method is not POST, handle it accordingly
         return redirect('/blogs')
 @app.route('/delete',methods=['GET','POST'])
 def delete():
