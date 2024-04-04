@@ -147,6 +147,7 @@ def read_more():
             return "Blog post not found."
     else:
         return redirect('/blogs')
+        
 @app.route('/delete',methods=['GET','POST'])
 def delete():
     if 'username' not in session:
