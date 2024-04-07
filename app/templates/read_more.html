@@ -50,7 +50,7 @@
     
     #commentForm input[type="submit"] {
         padding: 10px 20px;
-        background-color: #76ABAE; /* Adjust button color as needed */
+        background-color: #064cff; /* Adjust button color as needed */
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -59,7 +59,7 @@
     }
     
     #commentForm input[type="submit"]:hover {
-        background-color: #0056b3; /* Adjust button hover color as needed */
+        background-color: #0441dd; /* Adjust button hover color as needed */
     }
     
     /* Optional: Styles for placeholder */
@@ -101,6 +101,7 @@
         <p> {{blog.content}}</p>
     </div>
     <div class="comment">
+        <h3>Commets</h3>
         <form id="commentForm" action="/read_more" method="post">
             <input type="text" name="comment_data" id="" placeholder="Add comment" onkeydown="return event.key != 'Enter';">
             <input type="hidden" name="action" value="comment">

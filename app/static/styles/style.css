@@ -1,0 +1,338 @@
+/* <style> */
+body{font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #000000; 
+}
+
+.navbar{
+    position: relative;
+    display: flex;
+    padding: 0%;
+    height: 50px;
+    background-color: #000000;
+}
+
+.links{
+    padding: 0%;
+}
+.links>ul{
+ display: flex;
+}
+.links>ul>li{
+  list-style: None;
+  margin-right: 13px;
+  transition: all;
+  transition-duration: 0.4s;
+  color: #ffffff;
+ }
+ .links>ul>li>a{
+   text-decoration: none;
+   color: inherit;
+   cursor: default;
+ }
+ .links>ul>li:hover{
+   font-size: 17px;
+   border-bottom:1px solid rgb(73, 148, 246);
+ }
+ .logo{
+   position: absolute;
+   left: 50%;
+   transform: translateX(-50%);
+   height: 100%;
+   color: #ffffff;
+ }
+ .user_name_and_logout{
+   position: absolute;
+   right: 0;
+   color: #ffffff;
+ }
+ .blog_card {
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   padding: 20px;
+   margin-bottom: 20px;
+   background-color: f7f3f2;
+   box-shadow: 0 2px 4px rgba(255, 164, 164, 0.1);
+   display: flex;
+   max-width: 200px;
+   flex-direction: column; /* Ensure elements stackvertically */
+   margin: 10px;
+   transition: all;
+   transition-duration: 0.2s;
+   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  .blog_card:hover {
+      background-color: #e8e8e8;
+      scale: 1.1;
+      
+  }
+  .blog_card h2 {
+      font-size: 24px;
+
+      /* margin-bottom: 10px; */
+  }
+  
+  .blog_card p {
+      font-size: 16px;
+      margin-bottom: 10px; /* Increase margin to add space between paragraphs */
+  }
+  
+
+  
+  .blog_container{
+    margin: 100px;
+    display: flex;
+    flex-wrap: wrap;  
+    
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 50px;
+  }
+  .main_blog_container{
+    border: 2px solid #EEEEEE;
+    border-radius: 12px;
+    margin: 10px;
+    width: 50vw;
+    padding: 15px;
+    position: absolute;
+    left: 25%;
+    background-color: #EEEEEE;
+    color: #222831;
+
+  }
+  /* Style for container */
+.container {
+  display: flex;
+flex-direction: column;
+background-color: #e8e8e8;
+width: 50%;
+margin: auto;
+margin-top: 20px;
+padding: 20px;
+}
+
+
+
+/* Style for labels */
+label {
+font-weight: bold;
+}
+
+/* Style for inputs */
+.input {
+width: 100%;
+padding: 10px;
+margin-bottom: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+background-color: #d3d5d6;
+color: #000000;
+}
+
+/* Style for textarea */
+textarea.input {
+resize: vertical; /* Allow vertical resize */
+}
+
+/* Style for submit button */
+.primary-button {
+background-color: #064cff;
+color: rgb(255, 255, 255);
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: all;
+transition-duration: 0.4s;
+}
+
+.primary-button:hover {
+background-color: #0441dd;
+scale:1.1 ;
+}
+/*
+.comment {
+display: flex;
+margin-bottom: 20px;
+}
+
+.comment-avatar {
+margin-right: 10px;
+}
+
+.comment-avatar img {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+}
+
+.comment-content {
+flex: 1;
+}
+
+.comment-author {
+margin: 0;
+font-weight: bold;
+}
+
+.comment-text {
+margin: 5px 0;
+}
+
+.comment-date {
+font-size: 0.8em;
+color: #777;
+}
+*/
+/* </style> */
+
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px; ;
+}
+
+.search form {
+  display: flex;
+}
+
+.search input[type="text"] {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 0;
+  outline: none;
+  width: 200px;
+}
+
+.search input[type="submit"] {
+  border: none;
+  border-radius: 0;
+  background-color: #064cff;
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  width: 100px;
+}
+
+.blog_card form {
+          margin: 20px auto;
+          width: 300px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+      }
+      .blog_card input[type="submit"] {
+            border-radius: 12px;
+          background-color: #064cff;
+          color: rgb(255, 255, 255);
+          padding: 10px 20px;
+          border: none;
+          cursor: pointer;
+          height: 40px;
+          width: 120px;
+
+      }
+      .blog_card input[type="submit"]:hover {
+          background-color: #0441dd;
+  ;
+          color: #EEEEEE;
+      }
+      .delete{
+        border: none;
+        border-radius: 12px;    
+        background-color: rgb(255, 0, 0);
+        color: white;
+        height: 40px;
+        width: 120px;
+       
+      }
+      .delete:hover{
+        background-color: rgb(252, 52, 52);
+        }
+        .container{
+          flex-direction: column;
+          flex-wrap: wrap;
+        }
+        .container>h1{
+          /*font-size: 15vh;*/
+          font-size: 50px;
+          /*width: 100%;*/
+          padding: 0;
+          margin: 0;
+        }
+        .primary-button{
+          max-width: 100px;
+          margin: 10px;
+        }
+        .button_block{
+          display: flex;
+        }
+        .update:hover{background-color: rgb(64, 246, 101) ;}
+        .update{
+          background-color: rgb(0, 255, 51);
+          border: none;
+          border-radius: 12px;
+          height: 40px;
+        width: 120px;
+        margin-bottom: 20px;
+        }
+        .btn_container{
+          display: flex;
+          /*justify-content: space-between;*/
+          flex-wrap: wrap;
+        }
+        .btn_container>form{
+          margin: 0; 
+        }
+    
+.heading{
+  padding: 0%;
+  /* white-space: nowrap; */
+  /* width: 200px; */
+  height: 15ch;
+  /* border: 1px solid red; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.more{
+  /* border: 1px solid red; */
+  height: 1.4rem;
+  padding:0%;
+  opacity:0 ;
+  /* display: none; */
+}
+.more h3{
+margin: 0px;}
+
+.headingH2{
+  /* border: 1px solid red; */
+  margin: 0;
+}
+
+
+
+.user_name_and_logout button{
+  display: inline-block;
+  padding:6px;
+  background-color: #ff0000; /* Red background */
+  
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Show pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.user_name_and_logout button:hover {
+  background-color: #cc0000; /* Darker red on hover */
+}
+
+.user_name_and_logout button a{
+  color: #fff; /* White text */
+  text-decoration: none; /* Remove default underline for links */
+}

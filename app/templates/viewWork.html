@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Update{% endblock %}
 {% block content %}
-
+<!-- 
 <style>
     form {
         margin: 20px auto;
@@ -46,7 +46,9 @@
         /*width: 100%;*/
        margin-left: 20px;
       }
-</style>
+</style> -->
+<script src="{{ url_for('static', filename='js/Title.js') }}"></script>
+
   <h2>Currently, you are viewing {{user}}'s post.</h2>
    
 
@@ -54,7 +56,10 @@
 <div class="blog_container">
     {% for blog in blogs %}
     <div class="blog_card">
-        <h2>{{ blog.title }}</h2>
+        <div class="heading">
+            <h2 class="headingH2">{{ blog.title }}</h2>
+        </div>
+        <div class="more"><h3>...(more)</h3></div>   
         <p>Author: {{ blog.author }}</p>
         <div class="btn_container" style="display: flex;">
             <form action="/read_more" method="post">

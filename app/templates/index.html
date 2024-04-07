@@ -2,92 +2,28 @@
   {% block title %}Home{% endblock %}
   {% block content %}
 
-  <style>
-      form {
-          margin: 20px auto;
-          width: 300px;
-          text-align: center;
-          display: flex;
-      }
-
-      input[type="submit"] {
-          background-color: #76ABAE;
-          color: rgb(0, 0, 0);
-          padding: 10px 20px;
-          border: none;
-          cursor: pointer;
-          height: 40px;
-          width: 120px;
-
-      }
-      input[type="submit"]:hover {
-          background-color: #659bff;
-  ;
-          color: #EEEEEE;
-      }
-      .delete{
-        border: none;
-        background-color: rgb(247, 36, 36);
-        color: white;
-        height: 40px;
-        width: 120px;
-       
-      }
-      .delete:hover{
-        background-color: rgb(252, 52, 52);
-        }
-        .container{
-          flex-direction: column;
-          flex-wrap: wrap;
-        }
-        .container>h1{
-          /*font-size: 15vh;*/
-          font-size: 50px;
-          /*width: 100%;*/
-          padding: 0;
-          margin: 0;
-        }
-        .primary-button{
-          max-width: 100px;
-          margin: 10px;
-        }
-        .button_block{
-          display: flex;
-        }
-        .update:hover{background-color: rgb(107, 255, 136) ;}
-        .update{
-          background-color: rgb(45, 255, 87);
-          border: none;
-          height: 40px;
-        width: 120px;
-        margin-bottom: 20px;
-        }
-        .btn_container{
-          display: flex;
-          /*justify-content: space-between;*/
-          flex-wrap: wrap;
-        }
-        .btn_container>form{
-          margin: 0; 
-        }
-        
-  </style>
+    
   <div class="container" style="display: flex;">
       
     <h1>Hello,{{userName}}</h1>
           <br>
       <div class="button_block">
-        <button class="primary-button"  onclick="location.href=`/create`">➕ Create</button><br><br>
+        <button class="primary-button"  onclick="location.href=`/create`">Create</button><br><br>
       <button class="primary-button" onclick="location.href=`/logout`">Logout</button><br><br>
       <button class="primary-button" onclick="location.href=`/ChangePassword`">Change Password</button><br><br>
       </div>
       </div>
   </div>
+ 
+  <script src="{{ url_for('static', filename='js/Title.js') }}"></script>
 
   <div class="blog_container">
       {% for blog in blogs %}
       <div class="blog_card">
-          <h2>{{ blog.title }}</h2>
+        <div class="heading">
+          <h2 class="headingH2">{{ blog.title }}</h2>
+      </div>
+      <div class="more"><h3>...(more)</h3></div>   
           <p>Author: {{ blog.author }}</p>
           <div class="btn_container" style="display: flex;">
             <form action="/read_more" method="post">
